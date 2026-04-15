@@ -1,1 +1,7 @@
-# dyst_sem_pro_energy_communities
+# DYST - Project
+## Energy communities
+
+### project members:
+Omar Ahmed\
+Kamil Zaloga\
+Mihael Zecevic
