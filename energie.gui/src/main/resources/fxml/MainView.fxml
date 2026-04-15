@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="fh.technikum.energie.gui.controller.MainViewController"
+      alignment="CENTER"
+      spacing="20"
+      prefWidth="600"
+      prefHeight="400"
+      style="-fx-padding: 40;">
+
+    <Label fx:id="statusLabel" style="-fx-font-size: 16px;"/>
+
+</VBox>
