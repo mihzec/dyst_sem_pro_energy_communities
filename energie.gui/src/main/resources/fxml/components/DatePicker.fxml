@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane prefHeight="105.0" prefWidth="253.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fh.technikum.energie.gui.controller.components.DatePicker">
+   <children>
+      <DatePicker layoutX="22.0" layoutY="18.0" prefHeight="31.0" prefWidth="212.0" />
+      <TextField layoutX="22.0" layoutY="60.0" prefHeight="25.0" prefWidth="212.0" />
+   </children>
+</AnchorPane>
