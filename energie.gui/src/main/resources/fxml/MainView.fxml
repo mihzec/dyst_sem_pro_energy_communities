@@ -14,9 +14,9 @@
             <ColumnConstraints minWidth="120"/>
         </columnConstraints>
         <Label text="Community Pool" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <Label fx:id="lblCommunityPoolValue" text="0% used" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <Label fx:id="outputCommunityPoolValue" text="0% used" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <Label text="Grid Portion" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <Label fx:id="lblGridPortionValue" text="0%" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label fx:id="outPutGridPortionValue" text="0%" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
     </GridPane>
 
     <Button onAction="#onRefreshClicked" text="refresh"/>
