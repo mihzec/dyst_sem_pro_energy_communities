@@ -30,10 +30,10 @@
             <ColumnConstraints maxWidth="295.0" minWidth="180.0" prefWidth="272.0"/>
         </columnConstraints>
         <Label text="Start" GridPane.rowIndex="1"/>
-        <ComboBox fx:id="comboBoxStartTime" editable="true" promptText="dd.MM.yyyy HH:mm" GridPane.columnIndex="2"
+        <ComboBox fx:id="startTimeDatePicker" editable="true" promptText="dd.MM.yyyy HH:mm" GridPane.columnIndex="2"
                   GridPane.rowIndex="1" onShowing="#openDateTimePicker"/>
         <Label text="End" GridPane.rowIndex="2"/>
-        <ComboBox fx:id="comboBoxEndTime" editable="true" promptText="dd.MM.yyyy HH:mm" GridPane.columnIndex="2"
+        <ComboBox fx:id="endTimeDatePicker" editable="true" promptText="dd.MM.yyyy HH:mm" GridPane.columnIndex="2"
                   GridPane.rowIndex="2" onShowing="#openDateTimePicker"/>
     </GridPane>
 
