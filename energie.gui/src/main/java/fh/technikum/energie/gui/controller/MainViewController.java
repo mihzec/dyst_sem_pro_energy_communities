@@ -1,5 +1,5 @@
 package fh.technikum.energie.gui.controller;
-
+import fh.technikum.energie.gui.util.Constants;
 import fh.technikum.energie.gui.viewmodel.CurrentDataViewModel;
 import fh.technikum.energie.gui.viewmodel.HistoryDataViewModel;
 import javafx.event.Event;
@@ -57,6 +57,10 @@ public class MainViewController {
         //load current-data and history-data with localdatetime.now() on initialization
         currentDataViewModel.loadCurrentData();
         historyDataViewModel.loadHistoryData();
+
+        //set date pattern as prompt text for datepicker
+        startTimeDatePicker.setPromptText(Constants.GUI_DATETIME_PATTERN);
+        endTimeDatePicker.setPromptText(Constants.GUI_DATETIME_PATTERN);
     }
 
     @FXML
