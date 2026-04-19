@@ -47,11 +47,11 @@
             <ColumnConstraints minWidth="120"/>
         </columnConstraints>
         <Label text="Community produced" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-        <Label fx:id="historyOutputProduced" text="0 kwh" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        <Label fx:id="historyOutputProduced" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
         <Label text="Community used" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <Label fx:id="historyOutputUsed" text="0 kwh" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        <Label fx:id="historyOutputUsed" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
         <Label text="Grid used" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <Label fx:id="historyOutputGridUsed" text="0 kwh" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        <Label fx:id="historyOutputGridUsed" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
     </GridPane>
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
