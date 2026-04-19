@@ -1,0 +1,10 @@
+DROP TABLE IF EXISTS history_data;
+CREATE TABLE history_data
+(
+    id                 BIGINT AUTO_INCREMENT  PRIMARY KEY,
+    timestamp_hour     TIMESTAMP NOT NULL,
+    community_produces DECIMAL(10, 3),
+    grid_produces      DECIMAL(10, 3),
+    community_used     DECIMAL(10, 3),
+    grid_used          DECIMAL(10, 3)
+);
