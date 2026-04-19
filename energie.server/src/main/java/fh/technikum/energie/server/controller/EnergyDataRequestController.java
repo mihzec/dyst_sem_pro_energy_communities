@@ -1,0 +1,27 @@
+package fh.technikum.energie.server.controller;
+
+import fh.technikum.energie.server.entity.HistoryData;
+import fh.technikum.energie.server.service.DataLoadService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/energy")
+public class EnergyDataRequestController {
+
+    private final DataLoadService dataLoadService;
+
+    public EnergyDataRequestController(DataLoadService dataLoadService) {
+        this.dataLoadService = dataLoadService;
+    }
+
+    @GetMapping("/historical")
+    public List<HistoryData> getHistoricalData(@RequestParam(name = "start") String start,
+                                               @RequestParam(name = "end") String end) {
+        return dataLoadService.loadHistoryData();
+    }
+}
