@@ -3,7 +3,7 @@ package fh.technikum.energie.server.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "history_data")
@@ -14,7 +14,7 @@ public class HistoryData {
     private Long id;
 
     @Column(name = "timestamp_hour")
-    private Timestamp timestamp;
+    private LocalDateTime timestampHour;
 
     @Column(name = "community_produces")
     private BigDecimal communityProduced;
@@ -37,12 +37,12 @@ public class HistoryData {
         this.id = id;
     }
 
-    public Timestamp getTimestamp() {
-        return timestamp;
+    public LocalDateTime getTimestampHour() {
+        return timestampHour;
     }
 
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
+    public void setTimestampHour(LocalDateTime timestampHour) {
+        this.timestampHour = timestampHour;
     }
 
     public BigDecimal getCommunityProduced() {
