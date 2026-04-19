@@ -58,4 +58,9 @@ public class MainViewController {
         currentDataViewModel.loadCurrentData();
         historyDataViewModel.loadHistoryData();
     }
+
+    @FXML
+    public void openDateTimePicker(Event event) {
+        //TODO: implement date-time picker logik
+    }
 }
