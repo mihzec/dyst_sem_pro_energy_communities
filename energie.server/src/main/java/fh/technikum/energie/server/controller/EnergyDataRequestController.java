@@ -1,5 +1,6 @@
 package fh.technikum.energie.server.controller;
 
+import fh.technikum.energie.server.dto.HistoryDataDto;
 import fh.technikum.energie.server.entity.HistoryData;
 import fh.technikum.energie.server.service.DataLoadService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,8 +22,8 @@ public class EnergyDataRequestController {
     }
 
     @GetMapping("/historical")
-    public List<HistoryData> getHistoricalData(@RequestParam(name = "start") LocalDateTime start,
-                                               @RequestParam(name = "end") LocalDateTime end) {
+    public HistoryDataDto getHistoricalData(@RequestParam(name = "start") LocalDateTime start,
+                                            @RequestParam(name = "end") LocalDateTime end) {
         return dataLoadService.loadHistoryData(start, end);
     }
 }
