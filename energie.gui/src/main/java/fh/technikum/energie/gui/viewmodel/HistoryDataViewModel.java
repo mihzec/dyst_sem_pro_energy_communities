@@ -2,10 +2,12 @@ package fh.technikum.energie.gui.viewmodel;
 
 import fh.technikum.energie.gui.model.HistoryData;
 import fh.technikum.energie.gui.service.DataLoadService;
+import fh.technikum.energie.gui.util.Constants;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class HistoryDataViewModel {
@@ -42,9 +44,8 @@ public class HistoryDataViewModel {
     }
 
     public void loadHistoryData() {
-        //datum = (wenn eingabe nicht  gesetzt = null || wenn eingabe leer) ? nimm jetztiges localdattime : sonst aus inputfeld in der gui (? : => ternray operation, statt if-else)
-        LocalDateTime start = (Objects.isNull(startTimeProperty.get()) || startTimeProperty.get().isEmpty()) ? LocalDateTime.now() : LocalDateTime.parse(startTimeProperty.get());
-        LocalDateTime end = (Objects.isNull(endTimeProperty.get()) || endTimeProperty.get().isEmpty()) ? LocalDateTime.now() : LocalDateTime.parse(endTimeProperty.get());
+        LocalDateTime start = parseStringToLocalDateTime(startTimeProperty.get());
+        LocalDateTime end = parseStringToLocalDateTime(endTimeProperty.get());
         HistoryData historyData = dataLoadService.loadHistoryData(start, end);
 
         if (Objects.nonNull(historyData)) {
@@ -56,5 +57,15 @@ public class HistoryDataViewModel {
             historyOutputUsedProperty.set(NOT_DATA_AVAILABLE);
             historyOutputGridUsedProperty.set(NOT_DATA_AVAILABLE);
         }
+    }
+
+    private LocalDateTime parseStringToLocalDateTime(String dateTime) {
+        //datum = (wenn eingabe nicht  gesetzt = null || wenn eingabe leer)
+        // ? nimm jetztiges localdattime
+        // : sonst aus inputfeld in der gui
+        // info: (? :) ist eine "ternray operation", statt if-else
+        return (Objects.isNull(dateTime) || dateTime.isEmpty())
+                ? LocalDateTime.now()
+                : LocalDateTime.parse(dateTime, DateTimeFormatter.ofPattern(Constants.GUI_DATETIME_PATTERN)); //pattern notwendig, sonst exception, da custom format für app
     }
 }
