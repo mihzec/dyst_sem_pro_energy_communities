@@ -18,8 +18,8 @@ public class DataLoadService {
 
     public CurrentData loadCurrentData() {
         return new CurrentData(new BigDecimal("1.50"), new BigDecimal("2.533")); //dummy data
-        //TODO: server per rest-aufruf + mappign der response in /model/CurrentData
-    }
+        //TODO: server per rest-aufruf + mappign der response in /model/CurrentData -> wie unten -> es kann die callServerByUri() benutzt werden -> wiederverwendbarer code, da defacto ident nur ohne params
+     }
 
     public HistoryData loadHistoryData(LocalDateTime start, LocalDateTime end) {
         try {
