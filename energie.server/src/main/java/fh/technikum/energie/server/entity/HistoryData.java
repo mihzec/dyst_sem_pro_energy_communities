@@ -16,7 +16,7 @@ public class HistoryData {
     @Column(name = "timestamp_hour")
     private LocalDateTime timestampHour;
 
-    @Column(name = "community_produces")
+    @Column(name = "community_produced")
     private BigDecimal communityProduced;
 
     @Column(name = "community_used")
