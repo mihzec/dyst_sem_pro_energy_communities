@@ -1,7 +1,10 @@
 package fh.technikum.energie.server.service;
 
+import fh.technikum.energie.server.dto.CurrentDataDto;
 import fh.technikum.energie.server.dto.HistoryDataDto;
+import fh.technikum.energie.server.entity.CurrentData;
 import fh.technikum.energie.server.entity.HistoryData;
+import fh.technikum.energie.server.repository.CurrentDataRepository;
 import fh.technikum.energie.server.repository.HistoryDataRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -15,9 +18,20 @@ import java.util.function.Function;
 public class DataLoadService {
 
     private final HistoryDataRepository historyDataRepository;
+    private final CurrentDataRepository currentDataRepository;
 
-    public DataLoadService(HistoryDataRepository historyDataRepository) {
+
+    public DataLoadService(HistoryDataRepository historyDataRepository, CurrentDataRepository currentDataRepository) {
         this.historyDataRepository = historyDataRepository;
+        this.currentDataRepository = currentDataRepository;
+    }
+
+    @Transactional
+    public CurrentDataDto loadCurrentData() {
+        List<CurrentData> currentDataList = this.currentDataRepository.findAll();
+
+        CurrentData currentData = currentDataList.getFirst();
+        return new CurrentDataDto(currentData.getCommunityDepleted(), currentData.getGridPortion());
     }
 
     @Transactional

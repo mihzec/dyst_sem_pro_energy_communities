@@ -8,3 +8,12 @@ CREATE TABLE history_data
     community_used     DECIMAL(10, 3),
     grid_used          DECIMAL(10, 3)
 );
+
+DROP TABLE IF EXISTS current_data;
+CREATE TABLE current_data
+(
+    id                 BIGINT AUTO_INCREMENT  PRIMARY KEY,
+    timestamp_hour     TIMESTAMP NOT NULL,
+    community_depleted DECIMAL(10, 3),
+    grid_portion       DECIMAL(10, 3)
+);
