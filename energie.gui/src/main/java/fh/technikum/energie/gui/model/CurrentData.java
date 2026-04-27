@@ -4,11 +4,17 @@ import java.math.BigDecimal;
 
 public class CurrentData {
 
-    private final BigDecimal communityPoolOutput;
-    private final BigDecimal gridPortionOutput;
+    private BigDecimal communityPoolOutput;
+    private BigDecimal gridPortionOutput;
 
-    public CurrentData(BigDecimal communityPoolOutput, BigDecimal gridPortionOutput) {
-        this.communityPoolOutput = communityPoolOutput;
+    public CurrentData() {
+    }
+
+    public BigDecimal getGridPortionOutput() {
+        return gridPortionOutput;
+    }
+
+    public void setGridPortionOutput(BigDecimal gridPortionOutput) {
         this.gridPortionOutput = gridPortionOutput;
     }
 
@@ -16,7 +22,9 @@ public class CurrentData {
         return communityPoolOutput;
     }
 
-    public BigDecimal getGridPortionOutput() {
-        return gridPortionOutput;
+    public void setCommunityPoolOutput(BigDecimal communityPoolOutput) {
+        this.communityPoolOutput = communityPoolOutput;
     }
+
+
 }

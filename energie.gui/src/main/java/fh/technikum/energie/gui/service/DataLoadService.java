@@ -17,9 +17,16 @@ import java.time.LocalDateTime;
 public class DataLoadService {
 
     public CurrentData loadCurrentData() {
-        return new CurrentData(new BigDecimal("1.50"), new BigDecimal("2.533")); //dummy data
-        //TODO: server per rest-aufruf + mappign der response in /model/CurrentData -> wie unten -> es kann die callServerByUri() benutzt werden -> wiederverwendbarer code, da defacto ident nur ohne params
-     }
+
+        try {
+            String serverHistoryURI = String.format("%s/energy/current", Constants.URL_LOCALHOST);
+            String response = callServerByURI(serverHistoryURI).body();
+            return mapResponseToCurrentData(response);
+        } catch (Exception e) {
+            System.out.println("exception in loadHistoryData: " + e.getMessage());
+            return null; //no data available or error
+        }
+    }
 
     public HistoryData loadHistoryData(LocalDateTime start, LocalDateTime end) {
         try {
@@ -48,5 +55,11 @@ public class DataLoadService {
         //mapping with jackson -> dependency notwendig
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response, HistoryData.class);
+    }
+
+    private CurrentData mapResponseToCurrentData(String response) throws JsonProcessingException {
+        //mapping with jackson -> dependency notwendig
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(response, CurrentData.class);
     }
 }
