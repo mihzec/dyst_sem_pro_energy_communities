@@ -2,8 +2,8 @@ package fh.technikum.energie.server.service;
 
 import fh.technikum.energie.server.dto.CurrentDataDto;
 import fh.technikum.energie.server.dto.HistoryDataDto;
-import fh.technikum.energie.server.entity.CurrentData;
-import fh.technikum.energie.server.entity.HistoryData;
+import fh.technikum.energie.server.entity.CurrentDataEntity;
+import fh.technikum.energie.server.entity.HistoryDataEntity;
 import fh.technikum.energie.server.repository.CurrentDataRepository;
 import fh.technikum.energie.server.repository.HistoryDataRepository;
 import jakarta.transaction.Transactional;
@@ -28,27 +28,27 @@ public class DataLoadService {
 
     @Transactional
     public CurrentDataDto loadCurrentData() {
-        List<CurrentData> currentDataList = this.currentDataRepository.findAll();
+        List<CurrentDataEntity> currentDataEntityList = this.currentDataRepository.findAll();
 
-        CurrentData currentData = currentDataList.getFirst();
-        return new CurrentDataDto(currentData.getCommunityDepleted(), currentData.getGridPortion());
+        CurrentDataEntity currentDataEntity = currentDataEntityList.getFirst();
+        return new CurrentDataDto(currentDataEntity.getCommunityDepleted(), currentDataEntity.getGridPortion());
     }
 
     @Transactional
     public HistoryDataDto loadHistoryData(LocalDateTime start, LocalDateTime end) {
         //get data by timeperiod
-        List<HistoryData> historyDataList = this.historyDataRepository.findByTimestampHourBetween(start, end);
+        List<HistoryDataEntity> historyDataEntityList = this.historyDataRepository.findByTimestampHourBetween(start, end);
 
         //sum results -> methode wird aufgerufen mit (list, HistoryData Objekt :: die getMethode ())
-        BigDecimal communityProduced = sumValuesFromList(historyDataList, HistoryData::getCommunityProduced);
-        BigDecimal communityUsed = sumValuesFromList(historyDataList, HistoryData::getCommunityUsed);
-        BigDecimal gridUsed = sumValuesFromList(historyDataList, HistoryData::getGridUsed);
+        BigDecimal communityProduced = sumValuesFromList(historyDataEntityList, HistoryDataEntity::getCommunityProduced);
+        BigDecimal communityUsed = sumValuesFromList(historyDataEntityList, HistoryDataEntity::getCommunityUsed);
+        BigDecimal gridUsed = sumValuesFromList(historyDataEntityList, HistoryDataEntity::getGridUsed);
 
         return new HistoryDataDto(communityProduced, communityUsed, gridUsed);
     }
 
     //methode - iteriert über liste , holt je nach getterMetode jeweiligen wert -> ZERO, wenn nicht vorhanden, sonst addiert
-    private BigDecimal sumValuesFromList(List<HistoryData> list, Function<HistoryData, BigDecimal> getterMethode) {
+    private BigDecimal sumValuesFromList(List<HistoryDataEntity> list, Function<HistoryDataEntity, BigDecimal> getterMethode) {
         return list.stream()
                 .map(getterMethode)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);

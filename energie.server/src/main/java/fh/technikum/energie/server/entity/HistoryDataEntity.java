@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "history_data")
-public class HistoryData {
+public class HistoryDataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -26,7 +26,7 @@ public class HistoryData {
     private BigDecimal gridUsed;
 
 
-    public HistoryData() {
+    public HistoryDataEntity() {
     }
 
     public Long getId() {

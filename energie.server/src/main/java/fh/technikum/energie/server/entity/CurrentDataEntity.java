@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "current_data")
 
-public class CurrentData {
+public class CurrentDataEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -24,7 +24,7 @@ public class CurrentData {
     private BigDecimal gridPortion;
 
 
-    public CurrentData() {
+    public CurrentDataEntity() {
     }
 
     public Long getId() {
