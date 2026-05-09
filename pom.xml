@@ -17,7 +17,7 @@
     </properties>
 
     <groupId>fh.technikum</groupId>
-    <artifactId>energie-communities</artifactId>
+    <artifactId>energie-spring-boot-services</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
