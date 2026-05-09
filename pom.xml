@@ -15,6 +15,7 @@
         <module>energie.server</module>
         <module>energie.producer</module>
         <module>energie.user</module>
+        <module>usage.service</module>
     </modules>
 
 </project>
