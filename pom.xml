@@ -14,6 +14,7 @@
         <module>energie.gui</module>
         <module>energie.server</module>
         <module>energie.producer</module>
+        <module>energie.user</module>
     </modules>
 
 </project>
