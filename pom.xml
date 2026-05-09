@@ -5,14 +5,28 @@
              https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.0.6</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <java.version>25</java.version>
+    </properties>
+
     <groupId>fh.technikum</groupId>
-    <artifactId>energie-communities</artifactId>
+    <artifactId>energie-spring-boot-services</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>energie.gui</module>
         <module>energie.server</module>
+        <module>energie.producer</module>
+        <module>energie.user</module>
+        <module>usage.service</module>
+        <module>current.percentage.service</module>
     </modules>
 
 </project>

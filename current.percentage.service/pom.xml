@@ -12,10 +12,10 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>energie.server</artifactId>
-    <name>energie.server</name>
-    <description>Spring Boot module energie.server</description>
-
+    <artifactId>current.percentage.service</artifactId>
+    <name>current.percentage.service</name>
+    <description>Spring Boot module current.percentage.service</description>
+ 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -31,17 +31,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
