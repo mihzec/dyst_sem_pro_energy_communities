@@ -1,13 +1,11 @@
 package fh.technikum.energie.gui.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import fh.technikum.energie.gui.model.CurrentData;
 import fh.technikum.energie.gui.model.HistoryData;
 import fh.technikum.energie.gui.util.Constants;
+import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -51,13 +49,13 @@ public class DataLoadService {
         return client.send(getRequest, HttpResponse.BodyHandlers.ofString());
     }
 
-    private HistoryData mapResponseToHistoryData(String response) throws JsonProcessingException {
+    private HistoryData mapResponseToHistoryData(String response) {
         //mapping with jackson -> dependency notwendig
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response, HistoryData.class);
     }
 
-    private CurrentData mapResponseToCurrentData(String response) throws JsonProcessingException {
+    private CurrentData mapResponseToCurrentData(String response) {
         //mapping with jackson -> dependency notwendig
         ObjectMapper mapper = new ObjectMapper();
         return mapper.readValue(response, CurrentData.class);
