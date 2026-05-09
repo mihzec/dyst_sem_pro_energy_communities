@@ -13,6 +13,7 @@
     <modules>
         <module>energie.gui</module>
         <module>energie.server</module>
+        <module>energie.producer</module>
     </modules>
 
 </project>
