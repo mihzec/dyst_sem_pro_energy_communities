@@ -16,6 +16,7 @@
         <module>energie.producer</module>
         <module>energie.user</module>
         <module>usage.service</module>
+        <module>current.percentage.service</module>
     </modules>
 
 </project>
