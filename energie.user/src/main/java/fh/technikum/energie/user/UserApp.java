@@ -39,7 +39,7 @@ public class UserApp implements CommandLineRunner {
                    @Value("${consumption.evening.start}") String eveningStart) {
         this.morningEnd = LocalTime.parse(morningEnd, DateTimeFormatter.ofPattern("HH:mm"));
         this.eveningStart = LocalTime.parse(eveningStart, DateTimeFormatter.ofPattern("HH:mm"));
-        random = new Random();
+        this.random = new Random();
     }
 
     @Override
