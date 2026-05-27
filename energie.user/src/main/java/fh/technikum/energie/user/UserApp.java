@@ -6,6 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -20,30 +24,58 @@ public class UserApp implements CommandLineRunner {
     private int intervalTo;
 
     @Value("${kwh.range.from}")
-    private int kwhRangeMin;
-
+    private double kwhRangeMin;
     @Value("${kwh.range.to}")
-    private int kwhRangeMax;
+    private double kwhRangeMax;
 
-    public UserApp() {
+    @Value("${kwh.peak.factor}")
+    private double kwhPeakFactor;
+
+    private final Random random;
+    private final LocalTime morningEnd;
+    private final LocalTime eveningStart;
+
+    public UserApp(@Value("${consumption.morning.end}") String morningEnd,
+                   @Value("${consumption.evening.start}") String eveningStart) {
+        this.morningEnd = LocalTime.parse(morningEnd, DateTimeFormatter.ofPattern("HH:mm"));
+        this.eveningStart = LocalTime.parse(eveningStart, DateTimeFormatter.ofPattern("HH:mm"));
+        random = new Random();
     }
 
     @Override
     public void run(String... args) {
         LOG.info("energie.user service - consuming simulation starting");
+        simulateConsumption();
+    }
 
-        Random random = new Random();
+    private void simulateConsumption() {
         AtomicBoolean running = new AtomicBoolean(true);
         while (running.get()) {
-            int consumption = kwhRangeMin + random.nextInt(kwhRangeMax - kwhRangeMin + 1);
-            LOG.info("energie.user service - consumption: {} Wh/s", consumption);
+            BigDecimal consumption = calculateConsumption();
+            LOG.info("energie.user service - consumption: {} Wh", consumption);
             try {
-                Thread.sleep(intervalFrom + random.nextInt(intervalTo + intervalFrom));
-                //ToDo: RMQ call
+                Thread.sleep(calculateRandomWaitTime());
+                // ToDo: RMQ call
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
             }
         }
+    }
+
+    private int calculateRandomWaitTime() {
+        return intervalFrom + random.nextInt(intervalTo - intervalFrom + 1);
+    }
+
+    private BigDecimal calculateConsumption() {
+        LocalTime currenTime = LocalTime.now();
+        boolean isPeak = currenTime.isBefore(morningEnd) || currenTime.isAfter(eveningStart);
+
+        double baseConsumption = kwhRangeMin + random.nextDouble(kwhRangeMax - kwhRangeMin);
+        //includes peakFactor in case currenTime is before || after time gates in application.properties file
+        double consumption = isPeak ? baseConsumption * kwhPeakFactor : baseConsumption;
+
+        return BigDecimal.valueOf(consumption)
+                .setScale(3, RoundingMode.HALF_UP);
     }
 }
