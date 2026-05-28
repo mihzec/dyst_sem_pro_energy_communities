@@ -1,5 +1,6 @@
 package fh.technikum.energie.user;
 
+import fh.technikum.energie.user.service.EnergieUserMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class UserApp implements CommandLineRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserApp.class);
+    private final EnergieUserMessageService energieUserMessageService;
 
     @Value("${user.interval.from}")
     private int intervalFrom;
@@ -36,10 +38,12 @@ public class UserApp implements CommandLineRunner {
     private final LocalTime eveningStart;
 
     public UserApp(@Value("${consumption.morning.end}") String morningEnd,
-                   @Value("${consumption.evening.start}") String eveningStart) {
+                   @Value("${consumption.evening.start}") String eveningStart,
+                   EnergieUserMessageService energieUserMessageService) {
         this.morningEnd = LocalTime.parse(morningEnd, DateTimeFormatter.ofPattern("HH:mm"));
         this.eveningStart = LocalTime.parse(eveningStart, DateTimeFormatter.ofPattern("HH:mm"));
         this.random = new Random();
+        this.energieUserMessageService = energieUserMessageService;
     }
 
     @Override
@@ -53,9 +57,9 @@ public class UserApp implements CommandLineRunner {
         while (running.get()) {
             BigDecimal consumption = calculateConsumption();
             LOG.info("energie.user service - consumption: {} Wh", consumption);
+            energieUserMessageService.sendMessage(consumption);
             try {
                 Thread.sleep(calculateRandomWaitTime());
-                // ToDo: RMQ call
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 break;
