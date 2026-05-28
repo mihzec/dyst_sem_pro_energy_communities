@@ -1,6 +1,7 @@
 package fh.technikum.energie.producer.config;
 
 import org.springframework.amqp.core.Queue;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -8,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class QueueConfig {
 
     @Bean
-    public Queue producerMessage(){
-        return new Queue("producer_message", true);
+    public Queue producerMessage(@Value("${queue.name}") String queueName){
+        return new Queue(queueName, true);
     }
 }
