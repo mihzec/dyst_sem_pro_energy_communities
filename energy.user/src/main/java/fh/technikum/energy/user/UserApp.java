@@ -113,11 +113,11 @@ public class UserApp implements CommandLineRunner {
     }
 
     private BigDecimal calculateConsumption() {
-        LocalTime currenTime = LocalTime.now();
-        boolean isPeak = currenTime.isBefore(morningEnd) || currenTime.isAfter(eveningStart);
+        LocalTime currentTime = LocalTime.now();
+        boolean isPeak = currentTime.isBefore(morningEnd) || currentTime.isAfter(eveningStart);
 
         double baseConsumption = kwhRangeMin + random.nextDouble(kwhRangeMax - kwhRangeMin);
-        //includes peakFactor in case currenTime is before || after time gates in application.properties file
+        //includes peakFactor in case currentTime is before || after time gates in application.properties file
         double consumption = isPeak ? baseConsumption * kwhPeakFactor : baseConsumption;
 
         return BigDecimal.valueOf(consumption)
