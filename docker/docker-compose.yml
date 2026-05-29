@@ -13,6 +13,12 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
+      start_period: 15s
 
   energy.server:
     image: energy.server:${APP_VERSION}
