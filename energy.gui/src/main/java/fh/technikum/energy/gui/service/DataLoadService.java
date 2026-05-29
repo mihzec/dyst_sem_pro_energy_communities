@@ -21,7 +21,7 @@ public class DataLoadService {
             String response = callServerByURI(serverHistoryURI).body();
             return mapResponseToCurrentData(response);
         } catch (Exception e) {
-            System.out.println("exception in loadHistoryData: " + e.getMessage());
+            System.out.println("exception in loadCurrentData: " + e.getMessage());
             return null; //no data available or error
         }
     }
