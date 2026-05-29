@@ -58,6 +58,7 @@ public class UserApp implements CommandLineRunner {
             BigDecimal consumption = calculateConsumption();
             LOG.info("energy.user service - consumption: {} Wh", consumption);
             energyUserMessageService.sendMessage(consumption);
+            LOG.info("energy.user service - message sent to queue");
             try {
                 Thread.sleep(calculateRandomWaitTime());
             } catch (InterruptedException e) {
