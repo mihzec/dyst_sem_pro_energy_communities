@@ -19,7 +19,7 @@ public class EnergyUserMessageService {
     }
 
     public void sendMessage(BigDecimal producedEnergy) {
-        rabbitTemplate.convertAndSend(queueName, producedEnergy);
+        rabbitTemplate.convertAndSend(queueName, producedEnergy.toPlainString());
     }
 
 }
