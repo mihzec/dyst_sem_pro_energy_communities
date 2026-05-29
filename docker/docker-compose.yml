@@ -35,8 +35,10 @@ services:
     ports:
       - '8081:8080'
     depends_on:
-      - database
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      database:
+        condition: service_started
 
   energy.user:
     image: energy.user:${APP_VERSION}
@@ -45,8 +47,10 @@ services:
     ports:
       - '8082:8080'
     depends_on:
-      - database
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      database:
+        condition: service_started
 
   current.percentage.service:
     image: current.percentage.service:${APP_VERSION}
@@ -55,8 +59,10 @@ services:
     ports:
       - '8083:8080'
     depends_on:
-      - database
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      database:
+        condition: service_started
 
   usage.service:
     image: usage.service:${APP_VERSION}
@@ -65,5 +71,7 @@ services:
     ports:
       - '8084:8080'
     depends_on:
-      - database
-      - rabbitmq
+      rabbitmq:
+        condition: service_healthy
+      database:
+        condition: service_started
