@@ -7,7 +7,7 @@
 
     <parent>
         <groupId>fh.technikum</groupId>
-        <artifactId>energie-spring-boot-services</artifactId>
+        <artifactId>energy-spring-boot-services</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>

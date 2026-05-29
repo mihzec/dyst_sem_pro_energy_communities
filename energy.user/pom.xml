@@ -11,9 +11,10 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>usage.service</artifactId>
-    <name>usage.service</name>
-    <description>Spring Boot module usage.service</description>
+
+    <artifactId>energy.user</artifactId>
+    <name>energy.user</name>
+    <description>Spring Boot module energy.user</description>
 
     <dependencies>
         <dependency>
@@ -30,6 +31,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
     </dependencies>
 

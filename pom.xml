@@ -17,14 +17,14 @@
     </properties>
 
     <groupId>fh.technikum</groupId>
-    <artifactId>energie-spring-boot-services</artifactId>
+    <artifactId>energy-spring-boot-services</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
-        <module>energie.server</module>
-        <module>energie.producer</module>
-        <module>energie.user</module>
+        <module>energy.server</module>
+        <module>energy.producer</module>
+        <module>energy.user</module>
         <module>usage.service</module>
         <module>current.percentage.service</module>
     </modules>
