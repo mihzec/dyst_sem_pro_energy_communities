@@ -13,20 +13,11 @@ services:
     ports:
       - '5672:5672'
       - '15672:15672'
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
-      interval: 2s
-      timeout: 1s
-      retries: 10
-      start_period: 15s
 
   energy.server:
     image: energy.server:${APP_VERSION}
     ports:
       - '8080:8080'
-    depends_on:
-      - database
-      - rabbitmq
 
   energy.producer:
     image: energy.producer:${APP_VERSION}
@@ -34,11 +25,6 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - '8081:8080'
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      database:
-        condition: service_started
 
   energy.user:
     image: energy.user:${APP_VERSION}
@@ -46,11 +32,6 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - '8082:8080'
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      database:
-        condition: service_started
 
   current.percentage.service:
     image: current.percentage.service:${APP_VERSION}
@@ -58,11 +39,6 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - '8083:8080'
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      database:
-        condition: service_started
 
   usage.service:
     image: usage.service:${APP_VERSION}
@@ -70,8 +46,3 @@ services:
       - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - '8084:8080'
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
-      database:
-        condition: service_started
