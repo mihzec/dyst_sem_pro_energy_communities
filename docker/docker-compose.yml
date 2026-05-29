@@ -24,6 +24,8 @@ services:
 
   energy.producer:
     image: energy.producer:${APP_VERSION}
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - '8081:8080'
     depends_on:
@@ -32,6 +34,8 @@ services:
 
   energy.user:
     image: energy.user:${APP_VERSION}
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - '8082:8080'
     depends_on:
@@ -40,6 +44,8 @@ services:
 
   current.percentage.service:
     image: current.percentage.service:${APP_VERSION}
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - '8083:8080'
     depends_on:
@@ -48,6 +54,8 @@ services:
 
   usage.service:
     image: usage.service:${APP_VERSION}
+    environment:
+      - SPRING_RABBITMQ_HOST=rabbitmq
     ports:
       - '8084:8080'
     depends_on:
