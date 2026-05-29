@@ -5,12 +5,16 @@ import fh.technikum.energy.producer.service.weatherApiService.WeatherApiService;
 import fh.technikum.energy.producer.service.weatherApiService.helper.WeatherCondition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.amqp.AmqpException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -22,6 +26,8 @@ public class ProducerApp implements CommandLineRunner {
     private final EnergyProducerMessageService energyProducerMessageService;
 
     private static final Logger LOG = LoggerFactory.getLogger(ProducerApp.class);
+
+    private final List<BigDecimal> failedToSendMessages = new ArrayList<>();
 
     @Value("${producer.interval.from}")
     private int intervalFrom;
@@ -50,22 +56,20 @@ public class ProducerApp implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        LOG.info("energy.producer service - consuming simulation starting");
+        logInfo("energy.producer service - consuming simulation starting");
         simulateProduction();
     }
 
     private void simulateProduction() {
         // könnte noch optimiert werden in Richtung stündliche Abfrage - für unser Beispiel aber ausreichend
         WeatherCondition condition = weatherApiService.getCurrentWeatherConditions(cityLatitude, cityLongitude);
-        LOG.info("energy.producer service - weather condition: {} - factor = {}", condition, condition.factor);
+        logInfo(String.format("energy.producer service - weather condition: %s - factor = %s", condition, condition.factor));
 
         AtomicBoolean running = new AtomicBoolean(true);
         while (running.get()) {
             BigDecimal kwhProduced = calculateProduction(condition);
-            LOG.info("energy.producer service - generated: {} kWh", kwhProduced);
-            energyProducerMessageService.sendMessage(kwhProduced);
-            LOG.info("energy.producer service - message sent to queue");
-            LOG.info("________________________________________________");
+            sendMessageToQueue(kwhProduced);
+
             try {
                 Thread.sleep(calculateRandomWaitTime());
             } catch (InterruptedException e) {
@@ -73,6 +77,43 @@ public class ProducerApp implements CommandLineRunner {
                 break;
             }
         }
+    }
+
+    private void sendMessageToQueue(BigDecimal kwhProduced) {
+
+        logInfo(String.format("energy.producer service - generated: %s kWh", kwhProduced));
+        try {
+            energyProducerMessageService.sendMessage(kwhProduced);
+            logInfo("energy.producer service - message sent to queue");
+
+            if (!failedToSendMessages.isEmpty()) {
+                resendMessages();
+            }
+        } catch (AmqpException e) {
+            //rabbitMQ z.b. nicht erreichbar -> wenn msg nicht gesendet wird -> setzte in liste und versucht erneut
+            failedToSendMessages.add(kwhProduced);
+            logInfo("energy.producer service - message not sent to queue");
+        }
+    }
+
+    private void resendMessages() {
+        Iterator<BigDecimal> messageIterator = failedToSendMessages.iterator();
+        while (messageIterator.hasNext()) {
+            BigDecimal message = messageIterator.next();
+            try {
+                energyProducerMessageService.sendMessage(message);
+                messageIterator.remove();
+                logInfo("energy.producer service - message resent to queue");
+            } catch (AmqpException e) {
+                logInfo("energy.producer service - message resend failed");
+            }
+        }
+    }
+
+    private void logInfo(String message) {
+        LOG.info("________________________________________________");
+        LOG.info(message);
+        LOG.info("________________________________________________");
     }
 
     private BigDecimal calculateProduction(WeatherCondition condition) {
