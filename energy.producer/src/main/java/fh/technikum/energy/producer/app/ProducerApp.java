@@ -1,5 +1,6 @@
 package fh.technikum.energy.producer.app;
 
+import fh.technikum.energy.producer.dto.MessageDto;
 import fh.technikum.energy.producer.service.EnergyProducerMessageService;
 import fh.technikum.energy.producer.service.weatherApiService.WeatherApiService;
 import fh.technikum.energy.producer.service.weatherApiService.helper.WeatherCondition;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +29,7 @@ public class ProducerApp implements CommandLineRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(ProducerApp.class);
 
-    private final List<BigDecimal> failedToSendMessages = new ArrayList<>();
+    private final List<MessageDto> failedToSendMessages = new ArrayList<>();
 
     @Value("${producer.interval.from}")
     private int intervalFrom;
@@ -82,8 +84,9 @@ public class ProducerApp implements CommandLineRunner {
     private void sendMessageToQueue(BigDecimal kwhProduced) {
 
         logInfo(String.format("energy.producer service - generated: %s kWh", kwhProduced));
+        MessageDto MessageDto = createMessageDto(kwhProduced);
         try {
-            energyProducerMessageService.sendMessage(kwhProduced);
+            energyProducerMessageService.sendMessage(MessageDto);
             logInfo("energy.producer service - message sent to queue");
 
             if (!failedToSendMessages.isEmpty()) {
@@ -91,15 +94,15 @@ public class ProducerApp implements CommandLineRunner {
             }
         } catch (AmqpException e) {
             //rabbitMQ z.b. nicht erreichbar -> wenn msg nicht gesendet wird -> setzte in liste und versucht erneut
-            failedToSendMessages.add(kwhProduced);
+            failedToSendMessages.add(MessageDto);
             logInfo("energy.producer service - message not sent to queue");
         }
     }
 
     private void resendMessages() {
-        Iterator<BigDecimal> messageIterator = failedToSendMessages.iterator();
+        Iterator<MessageDto> messageIterator = failedToSendMessages.iterator();
         while (messageIterator.hasNext()) {
-            BigDecimal message = messageIterator.next();
+            MessageDto message = messageIterator.next();
             try {
                 energyProducerMessageService.sendMessage(message);
                 messageIterator.remove();
@@ -124,5 +127,9 @@ public class ProducerApp implements CommandLineRunner {
 
     private int calculateRandomWaitTime() {
         return intervalFrom + random.nextInt(intervalTo - intervalFrom + 1);
+    }
+
+    private MessageDto createMessageDto(BigDecimal kwhProduced) {
+        return new MessageDto(LocalDateTime.now(), kwhProduced);
     }
 }
