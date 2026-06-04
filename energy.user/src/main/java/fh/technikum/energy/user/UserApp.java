@@ -1,5 +1,6 @@
 package fh.technikum.energy.user;
 
+import fh.technikum.energy.user.dto.MessageDto;
 import fh.technikum.energy.user.service.EnergyUserMessageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -24,7 +26,7 @@ public class UserApp implements CommandLineRunner {
     private static final Logger LOG = LoggerFactory.getLogger(UserApp.class);
     private final EnergyUserMessageService energyUserMessageService;
 
-    private final List<BigDecimal> failedToSendMessages = new ArrayList<>();
+    private final List<MessageDto> failedToSendMessages = new ArrayList<>();
 
     @Value("${user.interval.from}")
     private int intervalFrom;
@@ -79,23 +81,23 @@ public class UserApp implements CommandLineRunner {
 
     private void sendMessageToQueue(BigDecimal consumption) {
         logInfo(String.format("energy.user service - consumption: %s Wh", consumption));
+        MessageDto energyUserMessageDto = createEnergyUserMessageDto(consumption);
         try {
-            energyUserMessageService.sendMessage(consumption);
+            energyUserMessageService.sendMessage(energyUserMessageDto);
             logInfo("energy.user service - message sent to queue");
 
             if (!failedToSendMessages.isEmpty()) {
                 resendMessages();
             }
         } catch (AmqpException e) {
-            failedToSendMessages.add(consumption);
+            failedToSendMessages.add(energyUserMessageDto);
             logInfo("energy.user service - message not sent to queue");
         }
     }
-
     private void resendMessages() {
-        Iterator<BigDecimal> messageIterator = failedToSendMessages.iterator();
+        Iterator<MessageDto> messageIterator = failedToSendMessages.iterator();
         while (messageIterator.hasNext()) {
-            BigDecimal message = messageIterator.next();
+            MessageDto message = messageIterator.next();
             try {
                 energyUserMessageService.sendMessage(message);
                 messageIterator.remove();
@@ -123,4 +125,11 @@ public class UserApp implements CommandLineRunner {
         return BigDecimal.valueOf(consumption)
                 .setScale(3, RoundingMode.HALF_UP);
     }
+
+
+
+    private MessageDto createEnergyUserMessageDto(BigDecimal consumption) {
+        return new MessageDto(LocalDateTime.now(), consumption);
+    }
+
 }

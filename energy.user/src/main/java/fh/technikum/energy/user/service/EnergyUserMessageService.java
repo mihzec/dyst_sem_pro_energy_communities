@@ -1,11 +1,9 @@
 package fh.technikum.energy.user.service;
 
+import fh.technikum.energy.user.dto.MessageDto;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.Date;
 
 @Service
 public class EnergyUserMessageService {
@@ -19,11 +17,8 @@ public class EnergyUserMessageService {
         this.rabbitTemplate = rabbitTemplate;
     }
 
-    public void sendMessage(BigDecimal producedEnergy) {
-        rabbitTemplate.convertAndSend(queueName, producedEnergy.toPlainString(), message -> {
-            message.getMessageProperties().setTimestamp(new Date());
-            return message;
-        });
+    public void sendMessage(MessageDto energyUserMessageDto) {
+        rabbitTemplate.convertAndSend(queueName, energyUserMessageDto);
     }
 
 }
