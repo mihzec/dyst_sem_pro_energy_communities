@@ -16,6 +16,10 @@ services:
 
   energy.server:
     image: energy.server:${APP_VERSION}
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=disysuser
+      - SPRING_DATASOURCE_PASSWORD=disyspw
     ports:
       - '8080:8080'
 
@@ -37,6 +41,9 @@ services:
     image: current.percentage.service:${APP_VERSION}
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=disysuser
+      - SPRING_DATASOURCE_PASSWORD=disyspw
     ports:
       - '8083:8080'
 
@@ -44,5 +51,8 @@ services:
     image: usage.service:${APP_VERSION}
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=disysuser
+      - SPRING_DATASOURCE_PASSWORD=disyspw
     ports:
       - '8084:8080'
