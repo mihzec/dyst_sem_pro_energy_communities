@@ -1,4 +1,4 @@
-package fh.technikum.energy.user;
+package fh.technikum.energy.user.app;
 
 import fh.technikum.energy.user.dto.MessageDto;
 import fh.technikum.energy.user.service.EnergyUserMessageService;
