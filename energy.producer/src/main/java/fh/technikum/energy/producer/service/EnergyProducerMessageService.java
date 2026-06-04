@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 @Service
 public class EnergyProducerMessageService {
@@ -19,7 +20,10 @@ public class EnergyProducerMessageService {
     }
 
     public void sendMessage(BigDecimal producedEnergy) {
-        rabbitTemplate.convertAndSend(queueName, producedEnergy.toPlainString());
+        rabbitTemplate.convertAndSend(queueName, producedEnergy.toPlainString(), message -> {
+            message.getMessageProperties().setTimestamp(new Date());
+            return message;
+        });
     }
 
 }
