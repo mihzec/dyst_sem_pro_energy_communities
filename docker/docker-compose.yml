@@ -7,6 +7,13 @@ services:
     environment:
       - POSTGRES_USER=disysuser
       - POSTGRES_PASSWORD=disyspw
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   rabbitmq:
     image: rabbitmq:management-alpine
@@ -22,6 +29,9 @@ services:
       - SPRING_DATASOURCE_PASSWORD=disyspw
     ports:
       - '8080:8080'
+    depends_on:
+      database:
+        condition: service_healthy
 
   energy.producer:
     image: energy.producer:${APP_VERSION}
@@ -46,6 +56,9 @@ services:
       - SPRING_DATASOURCE_PASSWORD=disyspw
     ports:
       - '8083:8080'
+    depends_on:
+      database:
+        condition: service_healthy
 
   usage.service:
     image: usage.service:${APP_VERSION}
@@ -56,3 +69,6 @@ services:
       - SPRING_DATASOURCE_PASSWORD=disyspw
     ports:
       - '8084:8080'
+    depends_on:
+      database:
+        condition: service_healthy
