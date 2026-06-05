@@ -17,13 +17,13 @@ public class UsageServiceMessageInService {
 
     @RabbitListener(queues = "${queue.producer}")
     public void readFromProducerMessageQueue(ReceivedMessageDto receivedMessageDto) {
-        LogUtil.printInfo(String.format("PRODUCER - Received message: %s - %s kWh", receivedMessageDto.timestamp(), receivedMessageDto.energyValue()));
+        LogUtil.printInfo(String.format("PRODUCER - Received message: %s - %s kWh", receivedMessageDto.datetime(), receivedMessageDto.kwh()));
         historyDataUpdateService.updateCurrentData(receivedMessageDto, SenderType.PRODUCER);
     }
 
     @RabbitListener(queues = "${queue.user}")
     public void readFromUserMessageQueue(ReceivedMessageDto receivedMessageDto) {
-        LogUtil.printInfo(String.format("USER - Received message: %s - %s kWh", receivedMessageDto.timestamp(), receivedMessageDto.energyValue()));
+        LogUtil.printInfo(String.format("USER - Received message: %s - %s kWh", receivedMessageDto.datetime(), receivedMessageDto.kwh()));
         historyDataUpdateService.updateCurrentData(receivedMessageDto, SenderType.USER);
     }
 }

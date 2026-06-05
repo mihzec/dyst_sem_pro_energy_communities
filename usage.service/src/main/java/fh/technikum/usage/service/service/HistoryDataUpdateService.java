@@ -25,7 +25,7 @@ public class HistoryDataUpdateService {
     public synchronized void updateCurrentData(ReceivedMessageDto receivedMessageDto, SenderType senderType) {
         LogUtil.printInfo("Updating current data");
 
-        LocalDateTime hour = receivedMessageDto.timestamp().truncatedTo(ChronoUnit.HOURS);
+        LocalDateTime hour = receivedMessageDto.datetime().truncatedTo(ChronoUnit.HOURS);
 
         HistoryDataEntity historyData = historyDataRepository.findByTimestampHour(hour)
                 .orElse(new HistoryDataEntity(hour));
@@ -34,7 +34,7 @@ public class HistoryDataUpdateService {
             //add producer energy
             BigDecimal current = historyData.getCommunityProduced() != null
                     ? historyData.getCommunityProduced() : BigDecimal.ZERO;
-            historyData.setCommunityProduced(current.add(receivedMessageDto.energyValue()));
+            historyData.setCommunityProduced(current.add(receivedMessageDto.kwh()));
         } else {
             //check if params are available, if not set to 0
             BigDecimal produced = historyData.getCommunityProduced() != null
@@ -47,7 +47,7 @@ public class HistoryDataUpdateService {
             //check available energy
             BigDecimal available = produced.subtract(alreadyUsed);
             //requested by energy.user
-            BigDecimal requested = receivedMessageDto.energyValue();
+            BigDecimal requested = receivedMessageDto.kwh();
 
             //check if energy can be used from community or must be used from grid
             if (requested.compareTo(available) <= 0) {
