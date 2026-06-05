@@ -7,6 +7,6 @@ public record MessageDto(
         String type,
         String association,
         BigDecimal kwh,
-        LocalDateTime dateTime
+        LocalDateTime datetime
 ) {
 }
