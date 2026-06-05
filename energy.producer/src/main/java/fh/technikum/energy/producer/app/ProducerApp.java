@@ -130,6 +130,6 @@ public class ProducerApp implements CommandLineRunner {
     }
 
     private MessageDto createMessageDto(BigDecimal kwhProduced) {
-        return new MessageDto(LocalDateTime.now(), kwhProduced);
+        return new MessageDto("PRODUCER", "COMMUNITY", kwhProduced, LocalDateTime.now());
     }
 }

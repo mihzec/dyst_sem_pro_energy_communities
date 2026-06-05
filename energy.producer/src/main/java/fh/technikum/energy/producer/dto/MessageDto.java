@@ -4,7 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record MessageDto(
-        LocalDateTime timestamp,
-        BigDecimal energyValue
+        String type,
+        String association,
+        BigDecimal kwh,
+        LocalDateTime datetime
 ) {
 }
