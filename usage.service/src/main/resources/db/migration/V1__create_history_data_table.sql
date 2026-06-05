@@ -5,3 +5,5 @@ CREATE TABLE IF NOT EXISTS history_data (
     community_used      DECIMAL(10, 3),
     grid_used           DECIMAL(10, 3)
 );
+
+ALTER TABLE history_data ADD CONSTRAINT uq_timestamp_hour UNIQUE (timestamp_hour);
