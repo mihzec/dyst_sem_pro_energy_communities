@@ -1,5 +1,6 @@
 package fh.technikum.usage.service.service;
 
+import fh.technikum.usage.service.dto.UpdateMessageDto;
 import fh.technikum.usage.service.service.enums.SenderType;
 import fh.technikum.usage.service.dto.ReceivedMessageDto;
 import fh.technikum.usage.service.entity.HistoryDataEntity;
@@ -17,8 +18,11 @@ public class HistoryDataUpdateService {
 
     private final HistoryDataRepository historyDataRepository;
 
-    public HistoryDataUpdateService(HistoryDataRepository historyDataRepository) {
+    private final UsageServiceMessageOutService usageServiceMessageOutService;
+
+    public HistoryDataUpdateService(HistoryDataRepository historyDataRepository, UsageServiceMessageOutService usageServiceMessageOutService) {
         this.historyDataRepository = historyDataRepository;
+        this.usageServiceMessageOutService = usageServiceMessageOutService;
     }
 
     @Transactional
@@ -60,5 +64,17 @@ public class HistoryDataUpdateService {
         }
 
         historyDataRepository.save(historyData);
+        sendUpdateMessage(historyData);
+    }
+
+    private void sendUpdateMessage(HistoryDataEntity historyData){
+        LogUtil.printInfo("Sending update message");
+        usageServiceMessageOutService.sendUpdateMessage(new UpdateMessageDto(
+                LocalDateTime.now(),
+                historyData.getTimestampHour(),
+                historyData.getCommunityProduced().doubleValue(),
+                historyData.getCommunityUsed().doubleValue(),
+                historyData.getGridUsed().doubleValue()
+        ));
     }
 }

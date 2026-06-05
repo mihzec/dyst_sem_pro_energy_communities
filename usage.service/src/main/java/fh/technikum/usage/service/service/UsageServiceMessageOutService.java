@@ -1,6 +1,7 @@
 package fh.technikum.usage.service.service;
 
 import fh.technikum.usage.service.dto.UpdateMessageDto;
+import fh.technikum.usage.service.utils.LogUtil;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class UsageServiceMessageOutService {
 
     public void sendUpdateMessage(UpdateMessageDto updateMessageDto) {
         rabbitTemplate.convertAndSend(queueName, updateMessageDto);
+        LogUtil.printInfo("update sent");
     }
 
 }
