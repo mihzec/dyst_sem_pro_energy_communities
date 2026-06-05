@@ -94,6 +94,7 @@ public class UserApp implements CommandLineRunner {
             logInfo("energy.user service - message not sent to queue");
         }
     }
+
     private void resendMessages() {
         Iterator<MessageDto> messageIterator = failedToSendMessages.iterator();
         while (messageIterator.hasNext()) {
@@ -126,10 +127,7 @@ public class UserApp implements CommandLineRunner {
                 .setScale(3, RoundingMode.HALF_UP);
     }
 
-
-
     private MessageDto createEnergyUserMessageDto(BigDecimal consumption) {
-        return new MessageDto(LocalDateTime.now(), consumption);
+        return new MessageDto("USER", "COMMUNITY", consumption, LocalDateTime.now());
     }
-
 }
