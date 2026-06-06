@@ -14,7 +14,7 @@ public class GuiApplication extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
 
         Scene scene = new Scene(loader.load());
-        primaryStage.setTitle("energy Communities");
+        primaryStage.setTitle("Energy Communities");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
