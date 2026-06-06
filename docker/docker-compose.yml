@@ -22,7 +22,11 @@ services:
       - '15672:15672'
 
   energy.server:
-    image: energy.server:${APP_VERSION}
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        MODULE: energy.server
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
       - SPRING_DATASOURCE_USERNAME=disysuser
@@ -34,7 +38,11 @@ services:
         condition: service_healthy
 
   energy.producer:
-    image: energy.producer:${APP_VERSION}
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        MODULE: energy.producer
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - TZ=Europe/Vienna
@@ -42,7 +50,11 @@ services:
       - '8081:8080'
 
   energy.user:
-    image: energy.user:${APP_VERSION}
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        MODULE: energy.user
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - TZ=Europe/Vienna
@@ -50,7 +62,11 @@ services:
       - '8082:8080'
 
   current.percentage.service:
-    image: current.percentage.service:${APP_VERSION}
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        MODULE: current.percentage.service
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
@@ -63,7 +79,11 @@ services:
         condition: service_healthy
 
   usage.service:
-    image: usage.service:${APP_VERSION}
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+      args:
+        MODULE: usage.service
     environment:
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_DATASOURCE_URL=jdbc:postgresql://database:5432/postgres
