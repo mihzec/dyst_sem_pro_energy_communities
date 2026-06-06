@@ -8,8 +8,15 @@ import org.springframework.stereotype.Service;
 @Service
 public class MessageInService {
 
+     private final CurrentDataUpdateService currentDataUpdateService;
+
+    public MessageInService(CurrentDataUpdateService currentDataUpdateService) {
+        this.currentDataUpdateService = currentDataUpdateService;
+    }
+
     @RabbitListener(queues = "${queue.update}")
     public void readFromProducerMessageQueue(UpdateMessageDto updateMessageDto) {
         LogUtil.printInfo(String.format("UPDATE - Received message: %s - %s kWh", updateMessageDto.timestamp_msg()));
+        currentDataUpdateService.updateCurrentData(updateMessageDto);
     }
 }
