@@ -15,7 +15,7 @@ public class MessageInService {
     }
 
     @RabbitListener(queues = "${queue.update}")
-    public void readFromProducerMessageQueue(UpdateMessageDto updateMessageDto) {
+    public void readFromUpdateQueue(UpdateMessageDto updateMessageDto) {
         LogUtil.printInfo(String.format("UPDATE - Received message: %s ", updateMessageDto.timestamp_msg()));
         currentDataUpdateService.updateCurrentData(updateMessageDto);
     }
